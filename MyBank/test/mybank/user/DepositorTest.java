@@ -511,8 +511,8 @@ public class DepositorTest {
 			d1.setBirthday("11/12/1969");
 			assertEquals("11/12/1969", d1.getBirthday());
 		} catch (IllegalArgumentException e) {
-			fail(e.getMessage());
-		}
+			fail(e.getMessage()); 
+		} 
 	}
 	
 	@Test
