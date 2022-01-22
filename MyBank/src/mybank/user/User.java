@@ -75,7 +75,7 @@ public abstract class User {
 	}
 
 	public void setEmail(String e) {
-		if (email == null || email.length() == 0 || email.equals(" ")) {
+		if (e == null || e.length() == 0 || e.equals(" ")) {
 			throw new IllegalArgumentException("Email cannot be empty");
 		}
 		int lastDot = e.lastIndexOf(".");
@@ -207,6 +207,10 @@ public abstract class User {
 		} else if (!password.equals(other.password))
 			return false;
 		return true;
+	}
+	
+	public String toString() {
+		return first + "," + last + "," + email + "," + password + "," + id + "," + birthday;
 	}
 	
 	
