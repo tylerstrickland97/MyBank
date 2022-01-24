@@ -86,6 +86,8 @@ public class DepositorTest {
 		Account a3 = new Account("My Checking Account", "01001020", 1345.98, true, false, trans4);
 		Account a4 = new Account("My Savings", "01002010", 987.22, false, true, trans3);
 		Account[] accs2 = new Account[2];
+		accs2[0] = a3;
+		accs2[1] = a4;
 		Depositor d2 = new Depositor("Mary", "Lane", "marylane@yahoo.com", "password", "mlane4", "05/06/1970", accs2);
 		
 		assertEquals("Mary", d2.getFirst());

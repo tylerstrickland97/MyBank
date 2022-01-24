@@ -2,6 +2,8 @@ package mybank.user;
 
 import java.util.ArrayList;
 
+//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
+
 public class Employee extends User{
 
 	
@@ -47,6 +49,10 @@ public class Employee extends User{
 		} else if (!depositors.equals(other.depositors))
 			return false;
 		return true;
+	}
+
+	public ArrayList<Depositor> getDepositors() {
+		return depositors;
 	}
 	
 	
