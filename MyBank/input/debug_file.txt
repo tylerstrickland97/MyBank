@@ -1,0 +1,8 @@
+# Richard,Quinn,richardquinn@mybankmail.com,password,rquinn3,09/18/1978
+* Hubert,Jackson,hubertjackson@gmail.com,password,hjackson6,11/08/1993
+! Checking,01203000,723.45,true,false
+$ Walmart,-75.64,12/20/2021
+$ Amazon,-43.78,11/02/2021
+! Savings,01920340,805.65,false,true
+$ Deposit,100.00,11/06/2021
+$ Withdrawal,-50.00,11/12/2021
