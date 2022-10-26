@@ -438,6 +438,7 @@ public class EmployeeWriterTest {
         emps.add( e8 );
         emps.add( e9 );
         emps.add( e10 );
+
         try {
             EmployeeWriter.writeEmployeeRecords( emps, "input/output_file_1.txt" );
         }
