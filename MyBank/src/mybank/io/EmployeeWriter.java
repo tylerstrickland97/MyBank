@@ -30,6 +30,7 @@ public class EmployeeWriter {
                 }
             }
             fileWriter.close();
+
         }
         catch ( Exception e ) {
             throw new IllegalArgumentException( "Unable to write to file: " + name );
