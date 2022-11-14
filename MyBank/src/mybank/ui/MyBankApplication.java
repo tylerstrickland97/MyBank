@@ -129,6 +129,7 @@ public class MyBankApplication implements ActionListener {
                         else {
                             selectedAccountName = null;
                         }
+                        loginFrame.dispose();
                         makeDepositorGUI();
                     }
 
