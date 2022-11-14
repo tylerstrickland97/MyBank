@@ -95,14 +95,14 @@ public class BankManager {
 
     }
 
-    public void addNewEmployee ( String first, String last, String email, String password, String id,
-            String birthday ) {
+    public void addNewEmployee ( String first, String last, String password, String id, String birthday ) {
         if ( ! ( currentUser instanceof Employee ) ) {
             throw new IllegalArgumentException( "You do not have access to this feature" );
         }
 
         Employee newEmp = null;
         try {
+            String email = first + last + "@mybankmail.com";
             newEmp = new Employee( first, last, email, password, id, birthday, new Depositor[0] );
         }
         catch ( Exception e ) {
@@ -125,26 +125,18 @@ public class BankManager {
             throw new IllegalArgumentException( "You do not have access to this feature" );
         }
 
+        Depositor d = findById( depId );
         Employee e = (Employee) currentUser;
-        if ( e.getDepositors().size() == 0 ) {
-            throw new IllegalArgumentException( "There are no depositors to delete" );
-        }
-        boolean exists = false;
-        for ( int i = 0; i < e.getDepositors().size(); i++ ) {
-            Depositor dep = e.getDepositors().get( i );
-            if ( dep.getId().equals( depId ) ) {
-                exists = true;
-                e.getDepositors().remove( dep );
-            }
-        }
-
-        if ( !exists ) {
+        if ( d == null ) {
             throw new IllegalArgumentException( "Depositor does not exist" );
+        }
+        else {
+            e.getDepositors().remove( d );
         }
 
     }
 
-    public void addTransaction ( String description, double amount, String date, Account a ) {
+    public void addTransaction ( String description, double amount, Account a ) {
 
         if ( ! ( currentUser instanceof Depositor ) ) {
             throw new IllegalArgumentException( "You do not have access to this feature" );
@@ -163,6 +155,9 @@ public class BankManager {
         }
         Transaction t = null;
         try {
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat simpleDF = new SimpleDateFormat( "MM/dd/yyyy" );
+            String date = simpleDF.format( calendar.getTime() );
             t = new Transaction( amount, description, date );
             a.getTransactions().add( t );
             a.setBalance( a.getBalance() + amount );
@@ -172,7 +167,7 @@ public class BankManager {
         }
     }
 
-    public void addNewAccount ( String name, double balance, boolean checking, boolean savings ) {
+    public void addNewAccount ( String name, boolean checking, boolean savings ) {
 
         if ( ! ( currentUser instanceof Depositor ) ) {
             throw new IllegalArgumentException( "You do not have access to this feature" );
@@ -193,6 +188,7 @@ public class BankManager {
         int newAccountReference = 10000000 + r.nextInt( 90000000 );
         String reference = Integer.toString( newAccountReference );
         try {
+            double balance = 0.00;
             Account a = new Account( name, reference, balance, checking, savings, new Transaction[0] );
             d.getAccounts().add( a );
         }
@@ -211,19 +207,16 @@ public class BankManager {
         if ( d.getAccounts().size() == 0 ) {
             throw new IllegalArgumentException( "There are no accounts to remove" );
         }
-        boolean exists = false;
+
         for ( int i = 0; i < d.getAccounts().size(); i++ ) {
             Account act = d.getAccounts().get( i );
             if ( act.getName().equals( a.getName() ) ) {
-                exists = true;
+                d.getAccounts().remove( i );
+                return;
             }
         }
-        if ( !exists ) {
-            throw new IllegalArgumentException( "Account does not exist" );
-        }
-        else {
-            d.getAccounts().remove( a );
-        }
+
+        throw new IllegalArgumentException( "The account does not exist" );
     }
 
     public void loadEmployees ( String file ) {
@@ -242,14 +235,21 @@ public class BankManager {
 
         Depositor d = (Depositor) currentUser;
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDF = new SimpleDateFormat( "MM-dd-yyyy" );
+        SimpleDateFormat simpleDF = new SimpleDateFormat( "MM/dd/yyyy" );
         String date = simpleDF.format( calendar.getTime() );
         boolean exists = false;
         for ( int i = 0; i < d.getAccounts().size(); i++ ) {
             Account act = d.getAccounts().get( i );
             if ( act.equals( a ) ) {
-                Transaction t = new Transaction( amount, "Withdrawal", date );
-                a.getTransactions().add( t );
+                if ( amount > 0 ) {
+                    Transaction t = new Transaction( -amount, "Withdrawal", date );
+                    a.getTransactions().add( t );
+                }
+                else {
+                    Transaction t = new Transaction( amount, "Withdrawal", date );
+                    a.getTransactions().add( t );
+                }
+
                 a.setBalance( a.getBalance() - amount );
                 exists = true;
             }
@@ -351,6 +351,34 @@ public class BankManager {
         catch ( Exception ex ) {
             throw new IllegalArgumentException( ex.getMessage() );
         }
+    }
+
+    private Depositor findById ( String id ) {
+        Employee e = (Employee) currentUser;
+
+        for ( int i = 0; i < e.getDepositors().size(); i++ ) {
+            Depositor d = e.getDepositors().get( i );
+            if ( d.getId().equals( id ) ) {
+                return d;
+            }
+        }
+        return null;
+    }
+
+    public Account getAccountByName ( String name ) {
+        if ( ! ( currentUser instanceof Depositor ) ) {
+            throw new IllegalArgumentException( "You do not have access to this feature" );
+        }
+
+        Depositor d = (Depositor) currentUser;
+        for ( int i = 0; i < d.getAccounts().size(); i++ ) {
+            Account a = d.getAccounts().get( i );
+            if ( a.getName().equals( name ) ) {
+                return a;
+            }
+        }
+
+        return null;
     }
 
     public ArrayList<Transaction> viewTransactions ( Account a ) {

@@ -68,21 +68,10 @@ public class EmployeeWriterTest {
         Depositor d3 = new Depositor( "Peter", "Stone", "peterstone2@gmail.com", "password", "pstone8", "07/16/1981",
                 accounts3 );
 
-        Transaction t12 = new Transaction( 125.00, "Deposit", "11/29/2021" );
-        Transaction t70 = new Transaction( -98.76, "Costco", "11/30/2021" );
-        Transaction[] transactions6 = new Transaction[2];
-        transactions6[0] = t12;
-        transactions6[1] = t70;
-        Account a6 = new Account( "Checking", "01920304", 989.33, true, false, transactions6 );
-        Account[] accounts4 = new Account[1];
-        accounts4[0] = a6;
-        Depositor d4 = new Depositor( "Gabriel", "Coates", "coatesgabriel@yahoo.com", "password", "gcoates2",
-                "08/02/1959", accounts4 );
-        Depositor[] deps1 = new Depositor[4];
+        Depositor[] deps1 = new Depositor[3];
         deps1[0] = d1;
         deps1[1] = d2;
         deps1[2] = d3;
-        deps1[3] = d4;
         Employee e1 = new Employee( "Richard", "Quinn", "richardquinn@mybankmail.com", "password", "rquinn3",
                 "09/18/1978", deps1 );
 

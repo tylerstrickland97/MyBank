@@ -21,7 +21,7 @@ public class EmployeeReaderTest {
         assertEquals( "password", emps.get( 0 ).getPassword() );
         assertEquals( "rquinn3", emps.get( 0 ).getId() );
         assertEquals( "09/18/1978", emps.get( 0 ).getBirthday() );
-        assertEquals( 4, emps.get( 0 ).getDepositors().size() );
+        assertEquals( 3, emps.get( 0 ).getDepositors().size() );
         assertEquals( 2, emps.get( 0 ).getDepositors().get( 0 ).getAccounts().get( 0 ).getTransactions().size() );
 
         assertEquals( "Monica", emps.get( 1 ).getFirst() );

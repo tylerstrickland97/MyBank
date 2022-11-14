@@ -60,7 +60,7 @@ public class BankManagerTest {
         assertTrue( manager.getCurrentUser() instanceof Employee );
 
         Employee e = (Employee) manager.getCurrentUser();
-        assertEquals( 4, e.getDepositors().size() );
+        assertEquals( 3, e.getDepositors().size() );
 
         try {
             manager.addNewDepositor( "James", "Martin", "jamesmartin@yahoo.com", "password", "jmartin4", "12/23/1992" );
@@ -69,7 +69,7 @@ public class BankManagerTest {
             fail( excpt.getMessage() );
         }
 
-        assertEquals( 5, e.getDepositors().size() );
+        assertEquals( 4, e.getDepositors().size() );
 
         try {
             manager.addNewDepositor( "James", "Martin", "jamesmartin@yahoo.com", "password", "jmartin4", "12/23/1992" );
@@ -89,7 +89,7 @@ public class BankManagerTest {
         }
         catch ( IllegalArgumentException excpt ) {
             assertEquals( "You do not have access to this feature", excpt.getMessage() );
-            assertEquals( 5, e.getDepositors().size() );
+            assertEquals( 4, e.getDepositors().size() );
         }
     }
 
@@ -101,7 +101,7 @@ public class BankManagerTest {
         assertTrue( manager.getCurrentUser() instanceof Depositor );
         assertEquals( 10, manager.getEmployees().size() );
         try {
-            manager.addNewEmployee( "Jackie", "Chan", "jackiechan@mybankmail.com", "password", "jchan4", "01/13/1976" );
+            manager.addNewEmployee( "Jackie", "Chan", "password", "jchan4", "01/13/1976" );
             fail();
         }
         catch ( IllegalArgumentException e ) {
@@ -113,7 +113,7 @@ public class BankManagerTest {
         assertTrue( manager.login( "dhouser2", "password" ) );
         assertTrue( manager.getCurrentUser() instanceof Employee );
         try {
-            manager.addNewEmployee( "Jackie", "Chan", "jackiechan@mybankmail.com", "password", "jchan4", "01/13/1976" );
+            manager.addNewEmployee( "Jackie", "Chan", "password", "jchan4", "01/13/1976" );
             assertEquals( 11, manager.getEmployees().size() );
         }
         catch ( IllegalArgumentException e ) {
@@ -121,7 +121,7 @@ public class BankManagerTest {
         }
 
         try {
-            manager.addNewEmployee( "Jackie", "Chan", "jackiechan@mybankmail.com", "password", "jchan4", "01/13/1976" );
+            manager.addNewEmployee( "Jackie", "Chan", "password", "jchan4", "01/13/1976" );
             fail();
         }
         catch ( IllegalArgumentException e ) {
@@ -142,7 +142,7 @@ public class BankManagerTest {
         }
         catch ( IllegalArgumentException e ) {
             assertEquals( "You do not have access to this feature", e.getMessage() );
-            assertEquals( 4, manager.getEmployees().get( 0 ).getDepositors().size() );
+            assertEquals( 3, manager.getEmployees().get( 0 ).getDepositors().size() );
         }
 
         manager.logout();
@@ -150,10 +150,10 @@ public class BankManagerTest {
         assertTrue( manager.login( "rquinn3", "password" ) );
         assertTrue( manager.getCurrentUser() instanceof Employee );
         Employee emp = (Employee) manager.getCurrentUser();
-        assertEquals( 4, emp.getDepositors().size() );
+        assertEquals( 3, emp.getDepositors().size() );
         try {
             manager.removeDepositor( "amorley4" );
-            assertEquals( 3, emp.getDepositors().size() );
+            assertEquals( 2, emp.getDepositors().size() );
         }
         catch ( IllegalArgumentException e ) {
             fail( e.getMessage() );
@@ -165,15 +165,13 @@ public class BankManagerTest {
         }
         catch ( IllegalArgumentException e ) {
             assertEquals( "Depositor does not exist", e.getMessage() );
-            assertEquals( 3, emp.getDepositors().size() );
+            assertEquals( 2, emp.getDepositors().size() );
         }
 
         try {
             manager.removeDepositor( "hjackson6" );
-            assertEquals( 2, emp.getDepositors().size() );
-            manager.removeDepositor( "pstone8" );
             assertEquals( 1, emp.getDepositors().size() );
-            manager.removeDepositor( "gcoates2" );
+            manager.removeDepositor( "pstone8" );
             assertEquals( 0, emp.getDepositors().size() );
         }
         catch ( IllegalArgumentException e ) {
@@ -195,7 +193,7 @@ public class BankManagerTest {
         Account a = d.getAccounts().get( 0 );
         assertEquals( 2, a.getTransactions().size() );
         try {
-            manager.addTransaction( "Food Lion", -23.00, "12/31/2021", a );
+            manager.addTransaction( "Food Lion", -23.00, a );
             assertEquals( 3, a.getTransactions().size() );
         }
         catch ( IllegalArgumentException e ) {
@@ -203,7 +201,7 @@ public class BankManagerTest {
         }
 
         try {
-            manager.addTransaction( null, -100.00, "01/02/2022", a );
+            manager.addTransaction( null, -100.00, a );
             fail();
         }
         catch ( IllegalArgumentException e ) {
@@ -212,7 +210,7 @@ public class BankManagerTest {
 
         Account other = new Account( "Random Account", "10203303", 20.00, true, false, new Transaction[0] );
         try {
-            manager.addTransaction( "Walmart", 12.45, "12/30/2021", other );
+            manager.addTransaction( "Walmart", 12.45, other );
             fail();
         }
         catch ( IllegalArgumentException e ) {
@@ -223,7 +221,7 @@ public class BankManagerTest {
         manager.login( "rquinn3", "password" );
         assertTrue( manager.getCurrentUser() instanceof Employee );
         try {
-            manager.addTransaction( "Best Buy", 500.00, "12/29/2021", a );
+            manager.addTransaction( "Best Buy", 500.00, a );
             fail();
         }
         catch ( IllegalArgumentException e ) {
@@ -242,7 +240,7 @@ public class BankManagerTest {
         Depositor d = (Depositor) manager.getCurrentUser();
         assertEquals( 1, d.getAccounts().size() );
         try {
-            manager.addNewAccount( "Savings", 500.00, false, true );
+            manager.addNewAccount( "Savings", false, true );
             assertEquals( 2, d.getAccounts().size() );
         }
         catch ( IllegalArgumentException e ) {
@@ -252,10 +250,10 @@ public class BankManagerTest {
         manager.logout();
         assertTrue( manager.login( "mjohnson8", "password" ) );
         assertTrue( manager.getCurrentUser() instanceof Employee );
-        Employee e = (Employee) manager.getCurrentUser();
+        // Employee e = (Employee) manager.getCurrentUser();
 
         try {
-            manager.addNewAccount( "New", 200.00, true, false );
+            manager.addNewAccount( "New", true, false );
             fail();
         }
         catch ( IllegalArgumentException excpt ) {
@@ -280,7 +278,7 @@ public class BankManagerTest {
             fail();
         }
         catch ( IllegalArgumentException e ) {
-            assertEquals( "Account does not exist", e.getMessage() );
+            assertEquals( "The account does not exist", e.getMessage() );
             assertEquals( 2, d.getAccounts().size() );
         }
         try {
@@ -304,7 +302,7 @@ public class BankManagerTest {
         manager.logout();
         assertTrue( manager.login( "mhooke2", "password" ) );
         assertTrue( manager.getCurrentUser() instanceof Employee );
-        Employee e = (Employee) manager.getCurrentUser();
+        // Employee e = (Employee) manager.getCurrentUser();
 
         try {
             manager.removeAccount( a );
@@ -575,12 +573,12 @@ public class BankManagerTest {
         BankManager manager = new BankManager();
         manager.loadEmployees( "input/io_test_file.txt" );
         assertTrue( manager.login( "rquinn3", "password" ) );
-        assertEquals( 4, manager.getEmployees().get( 0 ).getDepositors().size() );
+        assertEquals( 3, manager.getEmployees().get( 0 ).getDepositors().size() );
         manager.removeDepositor( "hjackson6" );
         manager.save( "input/test_save_file.txt" );
         manager.loadEmployees( "input/test_save_file.txt" );
         ArrayList<Employee> emps = manager.getEmployees();
-        assertEquals( 3, emps.get( 0 ).getDepositors().size() );
+        assertEquals( 2, emps.get( 0 ).getDepositors().size() );
     }
 
 }
