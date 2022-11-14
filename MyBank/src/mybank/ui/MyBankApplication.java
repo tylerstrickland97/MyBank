@@ -1057,7 +1057,6 @@ public class MyBankApplication implements ActionListener {
                     clearData();
                 }
             }
-
             data = new Object[a.getTransactions().size()][columnNames.length];
             for ( int i = 0; i < a.getTransactions().size(); i++ ) {
                 Transaction t = a.getTransactions().get( i );
